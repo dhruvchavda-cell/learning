@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Registration Form</h2>
+
+  <form id="registerForm">
+    <label for="email">Email:</label>
+    <input id="email" type="text">
+    <button type="submit">Register</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    document.getElementById("registerForm")
+      .addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const isValid = email.includes("@");
+
+        if (isValid) {
+          document.getElementById("message").textContent =
+            "Email looks valid!";
+        } else {
+          document.getElementById("message").textContent =
+            "Please enter an email containing @.";
+        }
+      });
+  </script>
+</body>
+</html>

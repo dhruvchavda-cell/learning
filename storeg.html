@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    .product, .cart {
+      background: white;
+      padding: 15px;
+      margin: 12px 0;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 8px 12px;
+      margin: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Shopping Store</h1>
+
+  <div class="product">
+    <h3>Phone - ₹15,000</h3>
+    <button onclick="addToCart('Phone')">
+      Add to Cart
+    </button>
+  </div>
+
+  <div class="product">
+    <h3>Headphones - ₹2,000</h3>
+    <button onclick="addToCart('Headphones')">
+      Add to Cart
+    </button>
+  </div>
+
+  <div class="cart">
+    <h2>My Cart</h2>
+    <ul id="cartList"></ul>
+    <p id="total"></p>
+    <button onclick="clearCart()">Clear Cart</button>
+  </div>
+
+  <script>
+    const prices = {
+      Phone: 15000,
+      Headphones: 2000
+    };
+
+ 
+    let cart = JSON.parse(
+      localStorage.getItem("cart") || "[]"
+    );
+
+    function showCart() {
+      const cartList = document.getElementById("cartList");
+      const total = document.getElementById("total");
+
+      cartList.innerHTML = "";
+
+      cart.forEach((product, index) => {
+        const li = document.createElement("li");
+        li.textContent = product + " - ₹" + prices[product];
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+
+        removeButton.onclick = () => {
+          cart.splice(index, 1);
+          saveCart();
+        };
+
+        li.appendChild(removeButton);
+        cartList.appendChild(li);
+      });
+
+      const amount = cart.reduce(
+        (sum, product) => sum + prices[product], 0
+      );
+
+      total.textContent =
+        "Total: ₹" + amount + " | Items: " + cart.length;
+    }
+
+    function addToCart(product) {
+      cart.push(product);
+      saveCart();
+    }
+
+    function saveCart() {
+      localStorage.setItem("cart", JSON.stringify(cart));
+      showCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      localStorage.removeItem("cart");
+      showCart();
+    }
+
+    showCart();
+    
+  </script>
+</body>
+</html>
